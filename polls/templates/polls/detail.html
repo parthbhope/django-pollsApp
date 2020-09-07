@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Polls application</title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+		<a class="navbar-brand" href="{% url 'polls:pollsIndex' %}">Polls</a>
+	</nav> 
+	<div class="container-fluid center">
+		<h1>{{ question.question_text }}</h1>
+
+		{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+		<form class="from-control" action="{% url 'polls:vote' question.id %}" method="post">
+			{% csrf_token %}
+			{% for choice in question.choice_set.all %}
+
+			<label class="label from-control" for="choice{{ forloop.counter }}" class="from-control">{{ choice.choice_text }}</label>
+			<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" class="from-control"><br>
+			{% endfor %}
+			<input class = "btn btn-primary"type="submit" value="Vote">
+		</form>
+	</div>
+</body>
+</html>
